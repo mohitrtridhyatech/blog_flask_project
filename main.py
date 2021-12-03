@@ -4,6 +4,8 @@ from flask_mail import Mail
 import json
 from datetime import datetime
 import math
+from werkzeug.utils import secure_filename
+import os
 
 
 with open('config.json', 'r') as c:
@@ -19,6 +21,8 @@ app.config.update(
     MAIL_USERNAME = params['gmail-user'],
     MAIL_PASSWORD=  params['gmail-password']
 )
+app.config['UPLOAD_FOLDER'] = params['upload_location']
+
 mail = Mail(app)
 if(local_server):
     app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
@@ -165,6 +169,14 @@ def delete(sno):
         db.session.delete(post)
         db.session.commit()
     return redirect('/dashboard')
+
+@app.route("/uploader", methods = ['GET', 'POST'])
+def uploader():
+    if ('user' in session and session['user'] == params['admin_user']):
+        if (request.method == 'POST'):
+            f= request.files['file1']
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename) ))
+            return "Uploaded successfully"
 
 
 app.run(debug=True)

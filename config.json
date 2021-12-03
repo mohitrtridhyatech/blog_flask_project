@@ -15,7 +15,8 @@
     "no_of_posts": 2,
     "login_image":"login.svg",
     "admin_user":"mohit",
-    "admin_password": "mohit123"
+    "admin_password": "mohit123",
+    "upload_location":"D:\\mohit\\training\\Flask project 1"
   }
 
 }
