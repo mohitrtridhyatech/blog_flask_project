@@ -92,6 +92,7 @@ def dashboard():
             session['user']=username
             posts = Posts.query.all()
             return render_template("dashboard.html", params=params, posts=posts)    
+        return "Invalid Credentials"    
     else:
         return render_template("login.html", params=params)
 
@@ -121,11 +122,11 @@ def contact():
         entry = Contacts(name=name, phone_num = phone, msg = message, date= datetime.now(),email = email )
         db.session.add(entry)
         db.session.commit()
-        mail.send_message('New message from ' + name,
-                          sender=email,
-                          recipients = [params['gmail-user']],
-                          body = message + "\n" + phone
-                          )
+        # mail.send_message('New message from ' + name,
+        #                   sender=email,
+        #                   recipients = [params['gmail-user']],
+        #                   body = message + "\n" + phone
+        #                   )
     return render_template('contact.html', params=params)
 
 @app.route("/edit/<string:sno>", methods = ['GET', 'POST'])
